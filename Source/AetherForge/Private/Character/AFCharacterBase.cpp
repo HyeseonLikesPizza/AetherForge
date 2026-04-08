@@ -2,6 +2,8 @@
 
 #include "AetherForge/Public/Character/AFCharacterBase.h"
 
+#include "Player/AFPlayerState.h"
+
 
 AAFCharacterBase::AAFCharacterBase()
 {
@@ -10,7 +12,6 @@ AAFCharacterBase::AAFCharacterBase()
 
 UAbilitySystemComponent* AAFCharacterBase::GetAbilitySystemComponent() const
 {
-	// TODO: ASC 리턴하기
 	return nullptr;
 }
 

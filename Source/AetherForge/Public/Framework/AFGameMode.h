@@ -9,4 +9,6 @@ UCLASS()
 class AETHERFORGE_API AAFGameMode : public AGameMode
 {
 	GENERATED_BODY()
+
+	AAFGameMode();
 };

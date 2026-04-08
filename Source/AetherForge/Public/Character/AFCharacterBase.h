@@ -14,7 +14,7 @@ class AETHERFORGE_API AAFCharacterBase : public ACharacter, public IAbilitySyste
 public:
 	AAFCharacterBase();
 
-	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 protected:
 	virtual void BeginPlay() override;

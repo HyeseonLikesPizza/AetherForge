@@ -1,32 +1,46 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-
+﻿
 #include "Character/AFPlayerCharacter.h"
 
+#include "AbilitySystemComponent.h"
+#include "Player/AFPlayerState.h"
 
-// Sets default values
+
 AAFPlayerCharacter::AAFPlayerCharacter()
 {
-	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 }
 
-// Called when the game starts or when spawned
+UAbilitySystemComponent* AAFPlayerCharacter::GetAbilitySystemComponent() const
+{
+	AAFPlayerState* PS = GetPlayerState<AAFPlayerState>();
+	return PS ? PS->GetAbilitySystemComponent() : nullptr;
+}
+
+void AAFPlayerCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	// ASC 설정 - 서버 측에서 실행
+	// 이 시점에서 PlayerState와 Character 모두 유효함
+	if (AAFPlayerState* PS = GetPlayerState<AAFPlayerState>())
+	{
+		PS->GetAbilitySystemComponent()->InitAbilityActorInfo(PS, this);
+	}
+}
+
+void AAFPlayerCharacter::OnRep_PlayerState()
+{
+	// ASC 설정 - 클라 측에서 실행
+	// 이 시점에서 PlayerState와 Character 모두 유효함
+	if (AAFPlayerState* PS = GetPlayerState<AAFPlayerState>())
+	{
+		PS->GetAbilitySystemComponent()->InitAbilityActorInfo(PS, this);
+	}
+}
+
 void AAFPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-}
-
-// Called every frame
-void AAFPlayerCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
-
-// Called to bind functionality to input
-void AAFPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 

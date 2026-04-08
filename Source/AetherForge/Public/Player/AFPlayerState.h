@@ -6,6 +6,8 @@
 #include "GameFramework/PlayerState.h"
 #include "AFPlayerState.generated.h"
 
+class UAFAttributeSet;
+
 UCLASS()
 class AETHERFORGE_API AAFPlayerState : public APlayerState, public IAbilitySystemInterface
 {
@@ -18,5 +20,7 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UAbilitySystemComponent> ASC;
 
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UAFAttributeSet> AS;
 	
 };
