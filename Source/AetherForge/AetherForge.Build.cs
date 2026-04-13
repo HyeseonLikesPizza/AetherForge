@@ -16,7 +16,9 @@ public class AetherForge : ModuleRules
 			"GameplayTags",
 			"GameplayTasks",
 			"NetCore",
-			"UMG"
+			"UMG",
+			"NavigationSystem",
+			"AIModule"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
