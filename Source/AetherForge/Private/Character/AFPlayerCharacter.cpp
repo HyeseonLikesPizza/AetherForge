@@ -6,6 +6,7 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Player/AFPlayerState.h"
+#include "AetherForge/Public/Character/AFAnimInstance.h"
 
 
 AAFPlayerCharacter::AAFPlayerCharacter()
@@ -17,6 +18,16 @@ AAFPlayerCharacter::AAFPlayerCharacter()
 
 	// 캡슐에 메시 붙이기
 	GetMesh()->SetupAttachment(GetRootComponent());
+
+	// 메시 위치/회전 (Z=-90: 캡슐 중심→발바닥, Yaw=-90: DCC +Y전방→UE5 +X전방)
+	GetMesh()->SetRelativeLocationAndRotation(
+		FVector(0.f, 0.f, -90.f),
+		FRotator(0.f, -90.f, 0.f)
+	);
+
+	// AnimClass 지정 (블루프린트 ABP에서 오버라이드 가능)
+	GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
+	GetMesh()->SetAnimInstanceClass(UAFAnimInstance::StaticClass());
 
 	// 스프링암과 카메라 생성
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
@@ -44,7 +55,10 @@ void AAFPlayerCharacter::PossessedBy(AController* NewController)
 	// 이 시점에서 PlayerState와 Character 모두 유효함
 	if (AAFPlayerState* PS = GetPlayerState<AAFPlayerState>())
 	{
-		PS->GetAbilitySystemComponent()->InitAbilityActorInfo(PS, this);
+		if (UAbilitySystemComponent* ASC = PS->GetAbilitySystemComponent())
+		{
+			ASC->InitAbilityActorInfo(PS, this);
+		}
 	}
 }
 
@@ -54,7 +68,10 @@ void AAFPlayerCharacter::OnRep_PlayerState()
 	// 이 시점에서 PlayerState와 Character 모두 유효함
 	if (AAFPlayerState* PS = GetPlayerState<AAFPlayerState>())
 	{
-		PS->GetAbilitySystemComponent()->InitAbilityActorInfo(PS, this);
+		if (UAbilitySystemComponent* ASC = PS->GetAbilitySystemComponent())
+		{
+			ASC->InitAbilityActorInfo(PS, this);
+		}
 	}
 }
 

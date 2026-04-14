@@ -14,6 +14,7 @@ class AETHERFORGE_API AAFPlayerState : public APlayerState, public IAbilitySyste
 	GENERATED_BODY()
 
 public:
+	AAFPlayerState();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 private:
