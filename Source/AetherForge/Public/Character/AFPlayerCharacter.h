@@ -5,6 +5,9 @@
 #include "AFCharacterBase.h"
 #include "AFPlayerCharacter.generated.h"
 
+class UCameraComponent;
+class USpringArmComponent;
+
 UCLASS()
 class AETHERFORGE_API AAFPlayerCharacter : public AAFCharacterBase
 {
@@ -19,5 +22,10 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<USpringArmComponent> SpringArm;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UCameraComponent> Camera;
 	
 };

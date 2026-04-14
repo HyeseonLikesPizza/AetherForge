@@ -7,7 +7,7 @@
 
 AAFCharacterBase::AAFCharacterBase()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 }
 
 UAbilitySystemComponent* AAFCharacterBase::GetAbilitySystemComponent() const
@@ -18,15 +18,4 @@ UAbilitySystemComponent* AAFCharacterBase::GetAbilitySystemComponent() const
 void AAFCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
-
-}
-
-void AAFCharacterBase::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
-
-void AAFCharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }

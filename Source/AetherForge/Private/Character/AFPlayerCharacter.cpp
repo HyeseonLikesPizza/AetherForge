@@ -2,12 +2,32 @@
 #include "Character/AFPlayerCharacter.h"
 
 #include "AbilitySystemComponent.h"
+#include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "Player/AFPlayerState.h"
 
 
 AAFPlayerCharacter::AAFPlayerCharacter()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
+
+	// 캡슐 컴포넌트를 루트 컴포넌트로 설정
+	SetRootComponent(GetCapsuleComponent());
+
+	// 캡슐에 메시 붙이기
+	GetMesh()->SetupAttachment(GetRootComponent());
+
+	// 스프링암과 카메라 생성
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
+	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+
+	// 스프링암에 카메라 부착
+	Camera->SetupAttachment(SpringArm);
+
+	// 캡슐에 스프링암 부착
+	SpringArm->SetupAttachment(GetRootComponent());
+	
 }
 
 UAbilitySystemComponent* AAFPlayerCharacter::GetAbilitySystemComponent() const
