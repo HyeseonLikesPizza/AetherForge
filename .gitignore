@@ -75,3 +75,6 @@ DerivedDataCache/*
 
 # Obsidian notes (not tracked in git)
 /AetherForge/
+
+# JetBrains Rider IDE settings
+.idea/
