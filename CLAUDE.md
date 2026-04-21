@@ -24,21 +24,65 @@
 ## Git 브랜치 전략
 
 ```
-main   ← 항상 빌드 가능 + PIE 동작하는 상태만
-└── dev  ← 평소 작업 베이스
+main   ← 항상 빌드 가능 + PIE 동작. 마일스톤에만 merge, 태그 찍음
+└── dev   ← 통합 브랜치. 모든 feature의 베이스이자 merge 대상
     ├── feature/*  ← 새 기능
     ├── fix/*      ← 버그 수정
-    └── wip/*      ← 실험적 시도 (merge 안 할 수도 있음)
+    ├── chore/*    ← 빌드/설정/gitignore 등
+    └── wip/*      ← 실험 (merge 안 할 수도 있음)
 ```
 
-- `refactoring/` 브랜치는 사용하지 않음 → `feature/` 또는 `fix/`에 흡수
-- feature 완료 시 `dev`로 merge, 플레이 가능한 마일스톤 도달 시에만 `main`으로 merge
+### 절대 규칙 (어기면 히스토리 꼬임)
+
+1. **모든 작업 브랜치는 `dev`에서 분기한다.** feature → feature 분기/merge 금지.
+2. **`main`에 직접 커밋 금지.** dev → main merge만 허용.
+3. **feature → dev merge는 `--no-ff` 필수.** fast-forward는 feature 경계 유실.
+4. **공유 브랜치(dev/main)에 rebase/force push 금지.** 로컬 feature만 rebase 허용.
+5. **한 브랜치 = 한 목적.** 기능 + 버그 + 리팩토링 섞지 않는다.
+
+### 표준 플로우
+
+**새 작업 시작:**
+```bash
+git checkout dev && git pull
+git checkout -b feature/<목적>
+```
+
+**feature → dev merge (빌드 + PIE 확인 후):**
+```bash
+git checkout dev
+git merge --no-ff feature/<목적>
+git branch -d feature/<목적>
+git push origin --delete feature/<목적>
+```
+
+**dev → main merge (플레이 가능한 마일스톤):**
+```bash
+git checkout main
+git merge --no-ff dev
+git tag v0.X-phaseN
+git push origin main --tags
+```
+
+**feature 작업 중 dev가 앞서 나갔을 때:**
+- 내 로컬 feature만 사용 중 → `git rebase dev` (히스토리 일직선)
+- 이미 push되어 공유 중 → `git merge dev` (rebase는 히스토리 재작성이라 금지)
 
 ### 커밋 컨벤션
-- `feat`: 새 기능/클래스 추가
-- `fix`: 버그 수정
-- `chore`: 빌드 설정, gitignore 등 코드 외 변경
-- `refactor`: 기능 변경 없이 코드 정리
+- `feat:` 새 기능/클래스 추가
+- `fix:` 버그 수정
+- `chore:` 빌드 설정, gitignore 등 코드 외 변경
+- `refactor:` 기능 변경 없이 코드 정리
+- `docs:` 문서만
+
+### 브랜치 네이밍
+- 소문자 + 하이픈 (`feature/gas-attributes`, `fix/asc-nullptr`)
+- `refactoring/` 쓰지 않음 → `feature/` 또는 `fix/`에 흡수
+
+### 판단 기준: 브랜치 조작 전 체크
+- 사용자가 "feature A를 feature B에 merge" 같은 요청을 하면 → **먼저 왜 그러는지 확인하고 dev 경유 권장**
+- `main`에 뭔가 누락돼 보여도 임의로 merge하지 않음 → 사용자 확인
+- stash/untracked 파일이 있는데 checkout이 막히면 → `-f`는 사용자 승인 후에만
 
 ---
 
