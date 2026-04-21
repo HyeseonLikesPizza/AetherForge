@@ -14,6 +14,7 @@ void AAFPlayerController::SetupInputComponent()
 	if (UEnhancedInputComponent* EIC = Cast<UEnhancedInputComponent>(InputComponent))
 	{
 		EIC->BindAction(SetDestinationClickAction, ETriggerEvent::Started, this, &AAFPlayerController::OnSetDestinationStarted);
+		EIC->BindAction(SetDestinationClickAction, ETriggerEvent::Triggered, this, &AAFPlayerController::OnSetDestinationStarted);
 	}
 }
 
