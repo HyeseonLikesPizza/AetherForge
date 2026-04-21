@@ -4,6 +4,7 @@
 #include "AbilitySystemComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Player/AFPlayerState.h"
 #include "AetherForge/Public/Character/AFAnimInstance.h"
@@ -38,7 +39,22 @@ AAFPlayerCharacter::AAFPlayerCharacter()
 
 	// 캡슐에 스프링암 부착
 	SpringArm->SetupAttachment(GetRootComponent());
-	
+
+	// 탑다운 카메라 고정 (캐릭터/컨트롤러 회전 무시)
+	SpringArm->bUsePawnControlRotation = false;
+	SpringArm->bInheritPitch = false;
+	SpringArm->bInheritYaw = false;
+	SpringArm->bInheritRoll = false;
+
+	// 이동 방향으로 캐릭터 회전 (클릭 투 무브용)
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationRoll = false;
+	if (UCharacterMovementComponent* Movement = GetCharacterMovement())
+	{
+		Movement->bOrientRotationToMovement = true;
+		Movement->RotationRate = FRotator(0.f, 540.f, 0.f);
+	}
 }
 
 UAbilitySystemComponent* AAFPlayerCharacter::GetAbilitySystemComponent() const
