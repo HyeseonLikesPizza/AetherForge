@@ -81,3 +81,6 @@ DerivedDataCache/*
 
 # Claude Code local settings
 .claude/
+
+# Claude project instructions (local only)
+CLAUDE.md
