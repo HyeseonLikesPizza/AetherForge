@@ -3,22 +3,23 @@
 #include "CoreMinimal.h"
 #include "AttributeSet.h"
 #include "AbilitySystemComponent.h"
-#include "AFAttributeSet.generated.h"
+#include "AFVitalAttributeSet.generated.h"
 
-// 속성 접근자 매크로 (Get/Set/Init 함수 자동 생성)
+#ifndef ATTRIBUTE_ACCESSORS
 #define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
 	GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
+#endif
 
 UCLASS()
-class AETHERFORGE_API UAFAttributeSet : public UAttributeSet
+class AETHERFORGE_API UAFVitalAttributeSet : public UAttributeSet
 {
 	GENERATED_BODY()
 
 public:
-	UAFAttributeSet();
+	UAFVitalAttributeSet();
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
@@ -27,29 +28,29 @@ public:
 	// Health
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_Health, Category="Attributes|Vital")
 	FGameplayAttributeData Health;
-	ATTRIBUTE_ACCESSORS(UAFAttributeSet, Health)
+	ATTRIBUTE_ACCESSORS(UAFVitalAttributeSet, Health)
 
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_MaxHealth, Category="Attributes|Vital")
 	FGameplayAttributeData MaxHealth;
-	ATTRIBUTE_ACCESSORS(UAFAttributeSet, MaxHealth)
+	ATTRIBUTE_ACCESSORS(UAFVitalAttributeSet, MaxHealth)
 
 	// Mana
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_Mana, Category="Attributes|Vital")
 	FGameplayAttributeData Mana;
-	ATTRIBUTE_ACCESSORS(UAFAttributeSet, Mana)
+	ATTRIBUTE_ACCESSORS(UAFVitalAttributeSet, Mana)
 
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_MaxMana, Category="Attributes|Vital")
 	FGameplayAttributeData MaxMana;
-	ATTRIBUTE_ACCESSORS(UAFAttributeSet, MaxMana)
+	ATTRIBUTE_ACCESSORS(UAFVitalAttributeSet, MaxMana)
 
 	// Stamina
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_Stamina, Category="Attributes|Vital")
 	FGameplayAttributeData Stamina;
-	ATTRIBUTE_ACCESSORS(UAFAttributeSet, Stamina)
+	ATTRIBUTE_ACCESSORS(UAFVitalAttributeSet, Stamina)
 
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_MaxStamina, Category="Attributes|Vital")
 	FGameplayAttributeData MaxStamina;
-	ATTRIBUTE_ACCESSORS(UAFAttributeSet, MaxStamina)
+	ATTRIBUTE_ACCESSORS(UAFVitalAttributeSet, MaxStamina)
 
 protected:
 	UFUNCTION()

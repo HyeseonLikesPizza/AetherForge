@@ -75,6 +75,7 @@ void AAFPlayerCharacter::PossessedBy(AController* NewController)
 		{
 			ASC->InitAbilityActorInfo(PS, this);
 		}
+		PS->InitializeDerivedAttributes();
 	}
 }
 
@@ -88,6 +89,7 @@ void AAFPlayerCharacter::OnRep_PlayerState()
 		{
 			ASC->InitAbilityActorInfo(PS, this);
 		}
+		PS->InitializeDerivedAttributes();
 	}
 }
 

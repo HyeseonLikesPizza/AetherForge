@@ -1,7 +1,10 @@
-﻿
+
 #include "AetherForge/Public/Player/AFPlayerState.h"
 #include "AbilitySystemComponent.h"
-#include "GAS/Attributes/AFAttributeSet.h"
+#include "GAS/Attributes/AFVitalAttributeSet.h"
+#include "GAS/Attributes/AFPrimaryAttributeSet.h"
+#include "GAS/Attributes/AFDerivedAttributeSet.h"
+
 
 AAFPlayerState::AAFPlayerState()
 {
@@ -9,10 +12,22 @@ AAFPlayerState::AAFPlayerState()
 	ASC->SetIsReplicated(true);
 	ASC->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 
-	AS = CreateDefaultSubobject<UAFAttributeSet>(TEXT("AttributeSet"));
+	VitalAS   = CreateDefaultSubobject<UAFVitalAttributeSet>(TEXT("VitalAttributeSet"));
+	PrimaryAS = CreateDefaultSubobject<UAFPrimaryAttributeSet>(TEXT("PrimaryAttributeSet"));
+	DerivedAS = CreateDefaultSubobject<UAFDerivedAttributeSet>(TEXT("DerivedAttributeSet"));
 }
 
 UAbilitySystemComponent* AAFPlayerState::GetAbilitySystemComponent() const
 {
 	return ASC;
+}
+
+void AAFPlayerState::InitializeDerivedAttributes()
+{
+	if (!PrimaryAS || !DerivedAS)
+	{
+		return;
+	}
+
+	DerivedAS->RecalculateDerivedAttributes(PrimaryAS);
 }

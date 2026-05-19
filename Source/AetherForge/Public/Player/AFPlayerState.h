@@ -1,4 +1,4 @@
-﻿
+
 #pragma once
 
 #include "CoreMinimal.h"
@@ -6,7 +6,9 @@
 #include "GameFramework/PlayerState.h"
 #include "AFPlayerState.generated.h"
 
-class UAFAttributeSet;
+class UAFVitalAttributeSet;
+class UAFPrimaryAttributeSet;
+class UAFDerivedAttributeSet;
 
 UCLASS()
 class AETHERFORGE_API AAFPlayerState : public APlayerState, public IAbilitySystemInterface
@@ -16,12 +18,18 @@ class AETHERFORGE_API AAFPlayerState : public APlayerState, public IAbilitySyste
 public:
 	AAFPlayerState();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	void InitializeDerivedAttributes();
 
 private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UAbilitySystemComponent> ASC;
 
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UAFAttributeSet> AS;
-	
+	TObjectPtr<UAFVitalAttributeSet> VitalAS;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UAFPrimaryAttributeSet> PrimaryAS;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UAFDerivedAttributeSet> DerivedAS;
 };
