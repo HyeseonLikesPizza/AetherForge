@@ -74,8 +74,21 @@ void AAFPlayerCharacter::PossessedBy(AController* NewController)
 		if (UAbilitySystemComponent* ASC = PS->GetAbilitySystemComponent())
 		{
 			ASC->InitAbilityActorInfo(PS, this);
+
+			// GE_InitPrimaryAttribute 설정
+			if (InitPrimaryAttributeGEClass)
+			{
+				FGameplayEffectContextHandle ContextHandle = ASC->MakeEffectContext();
+				FGameplayEffectSpecHandle SpecHandle = ASC->MakeOutgoingSpec(
+					InitPrimaryAttributeGEClass, 1.0f, ContextHandle);
+
+				if (SpecHandle.IsValid())
+				{
+					ASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+				}
+			}
 		}
-		PS->InitializeDerivedAttributes();
+
 	}
 }
 
@@ -89,7 +102,7 @@ void AAFPlayerCharacter::OnRep_PlayerState()
 		{
 			ASC->InitAbilityActorInfo(PS, this);
 		}
-		PS->InitializeDerivedAttributes();
+
 	}
 }
 

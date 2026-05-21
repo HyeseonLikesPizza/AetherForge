@@ -21,13 +21,3 @@ UAbilitySystemComponent* AAFPlayerState::GetAbilitySystemComponent() const
 {
 	return ASC;
 }
-
-void AAFPlayerState::InitializeDerivedAttributes()
-{
-	if (!PrimaryAS || !DerivedAS)
-	{
-		return;
-	}
-
-	DerivedAS->RecalculateDerivedAttributes(PrimaryAS);
-}
