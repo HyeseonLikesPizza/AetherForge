@@ -5,6 +5,7 @@
 #include "AFCharacterBase.h"
 #include "AFPlayerCharacter.generated.h"
 
+class UGameplayEffect;
 class UCameraComponent;
 class USpringArmComponent;
 
@@ -27,5 +28,7 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UCameraComponent> Camera;
-	
+
+	UPROPERTY(EditDefaultsOnly, Category = "GAS")
+	TSubclassOf<UGameplayEffect> InitPrimaryAttributeGEClass;
 };

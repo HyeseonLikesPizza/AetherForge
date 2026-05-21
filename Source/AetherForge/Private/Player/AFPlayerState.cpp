@@ -22,15 +22,3 @@ UAbilitySystemComponent* AAFPlayerState::GetAbilitySystemComponent() const
 {
 	return ASC;
 }
-
-void AAFPlayerState::InitializeDerivedAttributes()
-{
-	if (!PrimaryAS || !DerivedAS)
-	{
-		PRINTLOG(TEXT("PrimaryAS or DerivedAS is null — skipping initialization"));
-		return;
-	}
-
-	DerivedAS->RecalculateDerivedAttributes(PrimaryAS);
-	PRINTLOG(TEXT("Derived attributes initialized"));
-}
