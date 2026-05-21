@@ -1,5 +1,6 @@
 
 #include "AetherForge/Public/Player/AFPlayerState.h"
+#include "AetherForge.h"
 #include "AbilitySystemComponent.h"
 #include "GAS/Attributes/AFVitalAttributeSet.h"
 #include "GAS/Attributes/AFPrimaryAttributeSet.h"
@@ -26,8 +27,10 @@ void AAFPlayerState::InitializeDerivedAttributes()
 {
 	if (!PrimaryAS || !DerivedAS)
 	{
+		PRINTLOG(TEXT("PrimaryAS or DerivedAS is null — skipping initialization"));
 		return;
 	}
 
 	DerivedAS->RecalculateDerivedAttributes(PrimaryAS);
+	PRINTLOG(TEXT("Derived attributes initialized"));
 }

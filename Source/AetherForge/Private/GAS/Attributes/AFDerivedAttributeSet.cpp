@@ -1,4 +1,5 @@
 #include "AetherForge/Public/GAS/Attributes/AFDerivedAttributeSet.h"
+#include "AetherForge.h"
 #include "Net/UnrealNetwork.h"
 
 UAFDerivedAttributeSet::UAFDerivedAttributeSet()
@@ -53,4 +54,8 @@ void UAFDerivedAttributeSet::RecalculateDerivedAttributes(const UAFPrimaryAttrib
 	SetDefense    (Vit  * 1.5f + Str * 0.5f);
 	SetHitRate    (Dex  * 1.0f);
 	SetCritRate   (Dex  * 0.3f);
+
+	PRINTLOG(TEXT("[Primary]   Str=%.1f  Dex=%.1f  Int=%.1f  Vit=%.1f"), Str, Dex, Int_, Vit);
+	PRINTLOG(TEXT("[Derived]   AttackPower=%.1f  MagicPower=%.1f  Defense=%.1f  HitRate=%.1f  CritRate=%.1f"),
+		GetAttackPower(), GetMagicPower(), GetDefense(), GetHitRate(), GetCritRate());
 }
