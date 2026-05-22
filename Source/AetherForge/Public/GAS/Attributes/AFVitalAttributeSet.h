@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "AttributeSet.h"
 #include "AbilitySystemComponent.h"
+#include "GAS/Attributes/AFPrimaryAttributeSet.h"
 #include "AFVitalAttributeSet.generated.h"
 
 #ifndef ATTRIBUTE_ACCESSORS
@@ -24,6 +25,8 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
+
+	void RecalculateVitalAttributes(const UAFPrimaryAttributeSet* PrimaryAS);
 
 	// Health
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_Health, Category="Attributes|Vital")

@@ -1,4 +1,5 @@
 #include "AetherForge/Public/GAS/Attributes/AFVitalAttributeSet.h"
+#include "AetherForge.h"
 #include "GameplayEffectExtension.h"
 #include "Net/UnrealNetwork.h"
 
@@ -83,4 +84,27 @@ void UAFVitalAttributeSet::OnRep_Stamina(const FGameplayAttributeData& OldStamin
 void UAFVitalAttributeSet::OnRep_MaxStamina(const FGameplayAttributeData& OldMaxStamina)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UAFVitalAttributeSet, MaxStamina, OldMaxStamina);
+}
+
+void UAFVitalAttributeSet::RecalculateVitalAttributes(const UAFPrimaryAttributeSet* PrimaryAS)
+{
+	const float Vit  = PrimaryAS->GetVitality();
+	const float Int_ = PrimaryAS->GetIntelligence();
+	const float Str  = PrimaryAS->GetStrength();
+
+	const float NewMaxHealth  = Vit  * 10.0f;
+	const float NewMaxMana    = Int_ * 8.0f;
+	const float NewMaxStamina = Vit  * 3.0f + Str * 2.0f;
+
+	SetMaxHealth (NewMaxHealth);
+	SetMaxMana   (NewMaxMana);
+	SetMaxStamina(NewMaxStamina);
+
+	// 현재 값도 Max에 맞게 클램프
+	SetHealth  (FMath::Clamp(GetHealth(),   0.f, NewMaxHealth));
+	SetMana    (FMath::Clamp(GetMana(),     0.f, NewMaxMana));
+	SetStamina (FMath::Clamp(GetStamina(),  0.f, NewMaxStamina));
+
+	PRINTLOG(TEXT("[Vital]   MaxHealth=%.1f  MaxMana=%.1f  MaxStamina=%.1f"),
+		GetMaxHealth(), GetMaxMana(), GetMaxStamina());
 }

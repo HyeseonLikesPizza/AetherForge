@@ -1,5 +1,6 @@
 #include "AetherForge/Public/GAS/Attributes/AFPrimaryAttributeSet.h"
 #include "GAS/Attributes/AFDerivedAttributeSet.h"
+#include "GAS/Attributes/AFVitalAttributeSet.h"
 #include "AbilitySystemComponent.h"
 #include "Net/UnrealNetwork.h"
 
@@ -61,10 +62,14 @@ void UAFPrimaryAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModC
 	}
 
 	const UAFDerivedAttributeSet* DerivedAS = ASC->GetSet<UAFDerivedAttributeSet>();
-	if (!DerivedAS)
+	if (DerivedAS)
 	{
-		return;
+		const_cast<UAFDerivedAttributeSet*>(DerivedAS)->RecalculateDerivedAttributes(this);
 	}
 
-	const_cast<UAFDerivedAttributeSet*>(DerivedAS)->RecalculateDerivedAttributes(this);
+	const UAFVitalAttributeSet* VitalAS = ASC->GetSet<UAFVitalAttributeSet>();
+	if (VitalAS)
+	{
+		const_cast<UAFVitalAttributeSet*>(VitalAS)->RecalculateVitalAttributes(this);
+	}
 }

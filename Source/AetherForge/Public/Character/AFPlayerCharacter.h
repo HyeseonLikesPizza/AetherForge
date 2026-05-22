@@ -31,4 +31,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "GAS")
 	TSubclassOf<UGameplayEffect> InitPrimaryAttributeGEClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = "GAS")
+	TSubclassOf<UGameplayEffect> InitVitalAttributeGEClass;
 };

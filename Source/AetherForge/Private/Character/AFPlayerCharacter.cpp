@@ -1,6 +1,6 @@
 ﻿
 #include "Character/AFPlayerCharacter.h"
-
+#include "AetherForge.h"
 #include "AbilitySystemComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -85,7 +85,38 @@ void AAFPlayerCharacter::PossessedBy(AController* NewController)
 				if (SpecHandle.IsValid())
 				{
 					ASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+					PRINTLOG(TEXT("GE_InitPrimaryAttributes applied: %s"), *InitPrimaryAttributeGEClass->GetName());
 				}
+				else
+				{
+					PRINTLOG(TEXT("GE_InitPrimaryAttributes SpecHandle invalid: %s"), *InitPrimaryAttributeGEClass->GetName());
+				}
+			}
+			else
+			{
+				PRINTLOG(TEXT("InitPrimaryAttributeGEClass is not set on %s"), *GetName());
+			}
+
+			// GE_InitVitalAttributes 설정
+			if (InitVitalAttributeGEClass)
+			{
+				FGameplayEffectContextHandle ContextHandle = ASC->MakeEffectContext();
+				FGameplayEffectSpecHandle SpecHandle = ASC->MakeOutgoingSpec(
+					InitVitalAttributeGEClass, 1.0f, ContextHandle);
+
+				if (SpecHandle.IsValid())
+				{
+					ASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+					PRINTLOG(TEXT("GE_InitVitalAttributes applied: %s"), *InitVitalAttributeGEClass->GetName());
+				}
+				else
+				{
+					PRINTLOG(TEXT("GE_InitVitalAttributes SpecHandle invalid: %s"), *InitVitalAttributeGEClass->GetName());
+				}
+			}
+			else
+			{
+				PRINTLOG(TEXT("InitVitalAttributeGEClass is not set on %s"), *GetName());
 			}
 		}
 
