@@ -1,5 +1,6 @@
 
 #include "AetherForge/Public/Player/AFPlayerState.h"
+#include "AetherForge.h"
 #include "AbilitySystemComponent.h"
 #include "GAS/Attributes/AFVitalAttributeSet.h"
 #include "GAS/Attributes/AFPrimaryAttributeSet.h"
