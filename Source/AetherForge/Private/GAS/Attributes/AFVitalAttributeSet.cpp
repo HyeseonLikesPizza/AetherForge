@@ -44,15 +44,18 @@ void UAFVitalAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCal
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
 		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
+		PRINTLOG(TEXT("[Vital]   Health=%.1f / MaxHealth=%.1f"), GetHealth(), GetMaxHealth());
 		// TODO: 체력 0 이하 시 사망 처리
 	}
 	else if (Data.EvaluatedData.Attribute == GetManaAttribute())
 	{
 		SetMana(FMath::Clamp(GetMana(), 0.f, GetMaxMana()));
+		PRINTLOG(TEXT("[Vital]   Mana=%.1f / MaxMana=%.1f"), GetMana(), GetMaxMana());
 	}
 	else if (Data.EvaluatedData.Attribute == GetStaminaAttribute())
 	{
 		SetStamina(FMath::Clamp(GetStamina(), 0.f, GetMaxStamina()));
+		PRINTLOG(TEXT("[Vital]   Stamina=%.1f / MaxStamina=%.1f"), GetStamina(), GetMaxStamina());
 	}
 }
 
