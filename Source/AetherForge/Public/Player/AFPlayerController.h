@@ -3,6 +3,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "GameplayTagContainer.h"
 #include "AFPlayerController.generated.h"
 
 class UInputMappingContext;
@@ -23,13 +24,12 @@ protected:
 	TObjectPtr<UInputMappingContext> DefaultMappingContext;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
-	TObjectPtr<UInputAction> SetDestinationClickAction;
+	TObjectPtr<UInputAction> LMBAction;
 
 private:
+	void OnLMBPressed();
+	void OnSetDestinationStarted();
+	
 	// 내부 상태
 	FVector CachedDestination;
-
-public:
-	
-	void OnSetDestinationStarted(); 
 };

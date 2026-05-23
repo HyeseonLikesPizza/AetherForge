@@ -5,6 +5,8 @@
 #include "AFCharacterBase.h"
 #include "AFPlayerCharacter.generated.h"
 
+class UAFForgerComponent;
+class UAFAbilitySet;
 class UGameplayEffect;
 class UCameraComponent;
 class USpringArmComponent;
@@ -17,8 +19,11 @@ class AETHERFORGE_API AAFPlayerCharacter : public AAFCharacterBase
 public:
 	AAFPlayerCharacter();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void OnRep_PlayerState() override;
+
+	UAFForgerComponent* GetForgerComponent() const { return ForgerComponent; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -34,4 +39,8 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "GAS")
 	TSubclassOf<UGameplayEffect> InitVitalAttributeGEClass;
+
+private:
+	UPROPERTY()
+	TObjectPtr<UAFForgerComponent> ForgerComponent;
 };

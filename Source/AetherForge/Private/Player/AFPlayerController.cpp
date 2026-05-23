@@ -1,11 +1,17 @@
 ﻿
 #include "AetherForge/Public/Player/AFPlayerController.h"
+#include "AetherForge.h"
+#include "AbilitySystemInterface.h"
+#include "GameplayTagContainer.h"
+#include "AbilitySystemComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "NavigationSystem.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
-
-
+#include "Character/AFEnemyCharacter.h"
+#include "Character/AFPlayerCharacter.h"
+#include "GAS/AFGameplayTags.h"
+#include "Player/AFForgerComponent.h"
 
 void AAFPlayerController::SetupInputComponent()
 {
@@ -13,8 +19,8 @@ void AAFPlayerController::SetupInputComponent()
 
 	if (UEnhancedInputComponent* EIC = Cast<UEnhancedInputComponent>(InputComponent))
 	{
-		EIC->BindAction(SetDestinationClickAction, ETriggerEvent::Started, this, &AAFPlayerController::OnSetDestinationStarted);
-		EIC->BindAction(SetDestinationClickAction, ETriggerEvent::Triggered, this, &AAFPlayerController::OnSetDestinationStarted);
+		// 마우스 클릭 액션 추가
+		EIC->BindAction(LMBAction, ETriggerEvent::Started, this, &AAFPlayerController::OnLMBPressed);
 	}
 }
 
@@ -28,6 +34,35 @@ void AAFPlayerController::BeginPlay()
 	}
 
 	bShowMouseCursor = true;
+}
+
+void AAFPlayerController::OnLMBPressed()
+{
+	PRINTINFO();
+
+	FHitResult Hit;
+	if (GetHitResultUnderCursor(ECC_Visibility, false, Hit))
+	{
+		PRINTLOG(TEXT("Hit Actor: %s"), Hit.GetActor() ? *Hit.GetActor()->GetName() : TEXT("None"));
+
+		if (Hit.GetActor() && Cast<AAFEnemyCharacter>(Hit.GetActor()))
+		{
+			PRINTLOG(TEXT("Enemy detected, activating ability"));
+			if (AAFPlayerCharacter* PlayerCharacter = Cast<AAFPlayerCharacter>(GetPawn()))
+			{
+				PlayerCharacter->GetForgerComponent()->TryActivateAbilityByInputTag(AFGameplayTags::Input_LMB);
+			}
+		}
+		else
+		{
+			PRINTLOG(TEXT("Ground detected, moving"));
+			OnSetDestinationStarted();
+		}
+	}
+	else
+	{
+		PRINTLOG(TEXT("No hit result"));
+	}
 }
 
 void AAFPlayerController::OnSetDestinationStarted()

@@ -8,6 +8,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Player/AFPlayerState.h"
 #include "AetherForge/Public/Character/AFAnimInstance.h"
+#include "GAS/Ability/AFAbilitySet.h"
+#include "Player/AFForgerComponent.h"
 
 
 AAFPlayerCharacter::AAFPlayerCharacter()
@@ -25,6 +27,9 @@ AAFPlayerCharacter::AAFPlayerCharacter()
 		FVector(0.f, 0.f, -90.f),
 		FRotator(0.f, -90.f, 0.f)
 	);
+
+	// Forge Component 생성
+	ForgerComponent = CreateDefaultSubobject<UAFForgerComponent>(TEXT("ForgerComponent"));
 
 	// AnimClass 지정 (블루프린트 ABP에서 오버라이드 가능)
 	GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
@@ -63,6 +68,13 @@ UAbilitySystemComponent* AAFPlayerCharacter::GetAbilitySystemComponent() const
 	return PS ? PS->GetAbilitySystemComponent() : nullptr;
 }
 
+void AAFPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	ForgerComponent->InitializePlayerInput(PlayerInputComponent);
+}
+
 void AAFPlayerCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
@@ -73,6 +85,7 @@ void AAFPlayerCharacter::PossessedBy(AController* NewController)
 	{
 		if (UAbilitySystemComponent* ASC = PS->GetAbilitySystemComponent())
 		{
+			// ASC 설정
 			ASC->InitAbilityActorInfo(PS, this);
 
 			// GE_InitPrimaryAttribute 설정
@@ -118,8 +131,13 @@ void AAFPlayerCharacter::PossessedBy(AController* NewController)
 			{
 				PRINTLOG(TEXT("InitVitalAttributeGEClass is not set on %s"), *GetName());
 			}
-		}
 
+			// GrantedAbilities 부여
+			if (ForgerComponent)
+			{
+				ForgerComponent->GiveAbilities(ASC);
+			}
+		}
 	}
 }
 
