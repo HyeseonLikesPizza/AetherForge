@@ -10,7 +10,7 @@ class UAbilitySystemComponent;
 class UAFAbilitySet;
 class UInputAction;
 
-UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+UCLASS(Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class AETHERFORGE_API UAFForgerComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -29,12 +29,10 @@ public:
 	
 protected:
 	virtual void BeginPlay() override;
-
-
-private:
-	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	
+	UPROPERTY(EditAnywhere, Category = "Ability")
 	TObjectPtr<UAFAbilitySet> AbilitySet;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UPROPERTY(EditAnywhere, Category = "Input")
 	TMap<TObjectPtr<UInputAction>, FGameplayTag> InputTagMap;
 };

@@ -48,5 +48,6 @@ void UAFAbilitySet::TryActivateAbilityByInputTag(UAbilitySystemComponent* ASC, F
 	{
 		if (!Handle) return;
 		ASC->TryActivateAbility(*Handle);
+		PRINTLOG(TEXT("Ability Activated"));
 	}
 }

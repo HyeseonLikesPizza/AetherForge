@@ -41,6 +41,6 @@ protected:
 	TSubclassOf<UGameplayEffect> InitVitalAttributeGEClass;
 
 private:
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere, Category = "Ability")
 	TObjectPtr<UAFForgerComponent> ForgerComponent;
 };
